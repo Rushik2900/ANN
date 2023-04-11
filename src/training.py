@@ -1,8 +1,10 @@
 from src.utils.common import read_config
 import argparse
 from src.utils.data_mngmnt import get_data
-from src.utils.model import create_model
-
+from src.utils.model import create_model, save_model
+from src.utils.plot import save_plot
+import os
+import pandas as pd
 
 def training(config_path):
     config = read_config(config_path)
@@ -22,12 +24,25 @@ def training(config_path):
 
     history = model.fit(X_train, y_train, epochs=EPOCH, validation_data=VALIDATION_SET)
 
-
+    model_name=config['artifacts']['model_name']
+    artifacts_dir=config['artifacts']['artifacts_dir']
+    model_dir=config['artifacts']['model_dir']
+    model_dir_path=os.path.join(artifacts_dir, model_dir)
+    os.makedirs(model_dir_path, exist_ok=True)
+    save_model(model, model_name, model_dir)
+    
+    df=pd.Dataframe(history.history).plot(figsize=(10,7))
+    plot_name=config['artifacts']['plot_name']
+    plot_dir=config['artifacts']['plot_dir']
+    plot_dir_path=os.path.join(artifacts_dir, plot_dir)
+    os.makedirs(plot_dir_path, exist_ok=True)
+    
+    save_plot(df, plot_name, plot_dir)
     
 
 if __name__=='__main__':
     args=argparse.ArgumentParser()
-    args.add_argument("--config", "c", default="config.yml")
+    args.add_argument("--config", "-c", default="config.yaml")
     parsed_arg = args.parse_args()
 
     training(config_path= parsed_arg.config)
