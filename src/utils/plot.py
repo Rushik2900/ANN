@@ -8,5 +8,5 @@ def save_plot(df, plot_name, plot_dir):
     path_to_plot=os.path.join(plot_dir, unique_filename)
     df.plot(figsize=(10,7))
     plt.grid(True)
-    plt.save(path_to_plot)
+    plt.savefig(path_to_plot)
     plt.show()
