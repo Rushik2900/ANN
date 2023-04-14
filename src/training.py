@@ -29,15 +29,15 @@ def training(config_path):
     model_dir=config['artifacts']['model_dir']
     model_dir_path=os.path.join(artifacts_dir, model_dir)
     os.makedirs(model_dir_path, exist_ok=True)
-    save_model(model, model_name, model_dir)
+    save_model(model, model_name, model_dir_path)
     
-    df=pd.Dataframe(history.history).plot(figsize=(10,7))
+    df=pd.DataFrame(history.history).plot(figsize=(10,7))
     plot_name=config['artifacts']['plot_name']
     plot_dir=config['artifacts']['plot_dir']
     plot_dir_path=os.path.join(artifacts_dir, plot_dir)
     os.makedirs(plot_dir_path, exist_ok=True)
     
-    save_plot(df, plot_name, plot_dir)
+    save_plot(df, plot_name, plot_dir_path)
     
 
 if __name__=='__main__':
